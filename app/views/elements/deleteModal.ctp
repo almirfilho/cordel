@@ -1,3 +1,5 @@
+<?php $this->Html->script( 'bootstrap/bootstrap-modal', false ) ?>
+
 <!-- modal -->
 <div class="modal hide fade" id="delete">
 	<div class="modal-header">

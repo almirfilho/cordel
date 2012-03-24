@@ -6,8 +6,8 @@
 <title><?= $title_for_layout ?> :: Login</title>
 
 <?php
-	print $this->Html->css( array( 'bootstrap.min', 'bootstrap-responsive.min', 'kernel.login' ) );
-	print $this->Html->script( array( 'jquery.min', "bootstrap.min", 'bootstrap-alert' ) ) ;
+	print $this->Html->css( array( 'bootstrap.min', 'bootstrap-responsive.min', 'cordel.login' ) );
+	print $this->Html->script( array( 'jquery.min', "bootstrap/bootstrap.min", 'bootstrap/bootstrap-alert' ) ) ;
 ?>
 
 <script type="text/javascript">

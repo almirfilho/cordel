@@ -1,5 +1,3 @@
-<?php $this->Html->script( 'bootstrap-modal', false ) ?>
-
 <div class="form-horizontal view">
 	<div class="row-fluid title">
 		<h2 class="span10"><i class="icon-user"></i> <?= $user[ 'User' ][ 'name' ] ?></h2>

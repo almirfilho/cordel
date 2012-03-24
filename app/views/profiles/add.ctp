@@ -1,17 +1,13 @@
-<?= $this->Form->create( "Profile", array( "action" => "add/{$redirect}", "class" => "form" ) ) ?>
+<?php
+	print $this->Form->create( "Profile", array( "action" => "add", "class" => "form-horizontal" ) );
+	print $this->BForm->input( 'Profile.name', array( 'label' => 'Nome', 'placeholder' => 'Nome do perfil' ) );
+?>
 
-<table class="visualizar auto">
-	<tr>
-		<td class="label"><?= $this->Form->label( "Profile.name", 'Nome: <span class="req">*</span>' ) ?></td>
-		<td class="input"><?= $this->Form->input( "Profile.name", array( 'label' => false, 'escape' => false, 'class' => 'text' ) ) ?></td>
-	</tr>
-	<tr>
-		<td><?= $this->Form->label( "Area", "&Aacute;reas de Acesso:" ) ?></td>
-		<td class="areas"><?= $this->Form->input( "Area",  array( "label" => false, 'escape' => false, "multiple" => "checkbox" ) ) ?></td>
-	</tr>
-	<tr>
-		<td colspan="2"><?= $this->element( "submit", array( 'cancel' => '/profiles' ) ) ?></td>
-	</tr>
-</table>
+<div class="control-group">
+<?php
+	print $this->Form->label( 'Area', 'Áreas de Acesso', array( 'class' => 'control-label' ) );
+	print $this->Form->input( 'Area', array( "label" => false, 'div' => 'controls areas', 'escape' => false, 'multiple' => 'checkbox' ) );
+?>
+</div>
 
-<?= $this->Form->end() ?>
+<?= $this->element( "submit", array( 'cancel' => '/profiles' ) ) ?>

@@ -31,7 +31,7 @@ class UsersController extends AppController {
 	
 	public function view( $id = null ){
 			
-		$this->checkAccess( $this->name, "index" );
+		$this->checkAccess( $this->name, __FUNCTION__ );
 		$this->User->contain( array( 'Profile' => array( 'fields' => array( 'name' ) ) ) );
 		$user = $this->User->findById( $id );
 

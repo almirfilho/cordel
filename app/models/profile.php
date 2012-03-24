@@ -6,7 +6,9 @@ class Profile extends AppModel {
 	 * Atributtes
 	 ----------------------------------------*/ 
 
-	public $name 				= "Profile";
+	public $name  = 'Profile';
+
+	public $label = 'Perfil de Usuário';
 
 	/*----------------------------------------
 	 * Associations
@@ -14,7 +16,7 @@ class Profile extends AppModel {
 	
 	public $hasAndBelongsToMany = array( 'Area' );
 	
-	public $hasMany 			 = array( 'User' => array( 'dependent' => true ) );
+	public $hasMany 			= array( 'User' );
 	
 	/*----------------------------------------
 	 * Validation
@@ -22,10 +24,10 @@ class Profile extends AppModel {
 	
 	public $validate = array(
 	
-		"name" => array(
+		'name' => array(
 			
-			"rule"		=> array( 'between', 3, 50 ),
-			"message"	=> "Nome deve conter entre 3 e 50 caracteres."
+			'rule'		=> 'notEmpty',
+			'message'	=> 'Preencha Nome'
 		)
 	);
 	
@@ -35,7 +37,7 @@ class Profile extends AppModel {
 		
 	public function getAreas( $profile_id ){
 
-		$profile = $this->find( "first", array( 
+		$profile = $this->find( 'first', array( 
 			'conditions' => array( 'Profile.id' => $profile_id ), 
 			'fields' => 'Profile.modified',
 			'contain' => array( 

@@ -6,8 +6,8 @@
 <title><?= $title_for_layout ?></title>
 
 <?php
-	print $this->Html->css( array( 'bootstrap.min', 'bootstrap-responsive.min', 'kernel' ) );
-	print $this->Html->script( array( 'jquery.min', "bootstrap.min", 'bootstrap-alert', 'bootstrap-dropdown', 'general' ) ) ;
+	print $this->Html->css( array( 'bootstrap.min', 'bootstrap-responsive.min', 'cordel', 'custom' ) );
+	print $this->Html->script( array( 'jquery.min', "bootstrap/bootstrap.min", 'bootstrap/bootstrap-alert', 'bootstrap/bootstrap-dropdown', 'cordel' ) ) ;
 	print $scripts_for_layout;
 ?>
 

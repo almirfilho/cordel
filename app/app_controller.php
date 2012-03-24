@@ -6,7 +6,7 @@ class AppController extends Controller {
 	 * Atributtes
 	 ----------------------------------------*/
 	
-	public $title		=	"CordelCMS";
+	public $title		=	"Cordel";
 	
 	public $components	= 	array(
 		'Auth' => array( 
@@ -114,13 +114,13 @@ class AppController extends Controller {
 		
 		if( !$this->Session->check( "Auth.User.Profile.{$controller}" ) ){
 			
-			$this->Session->setFlash( "Voc&ecirc; n&atilde;o tem acesso a esta &Aacute;rea ({$controller->label}).", "default", array( 'class' => 'error' ) );
+			$this->Session->setFlash( "Voc&ecirc; n&atilde;o tem acesso a esta &Aacute;rea ({$this->label}).", "default", array( 'class' => 'error' ) );
 			$this->redirect( "/" );
 		}
 		
 		if( !$this->Session->check( "Auth.User.Profile.{$controller}.action.{$action}" ) ){
 			
-			$this->Session->setFlash( "Voc&ecirc; n&atilde;o tem acesso a esta opera&ccedil;&atilde;o ({$controller->label}: {$action}).", "default", array( 'class' => 'error' ) );
+			$this->Session->setFlash( "Voc&ecirc; n&atilde;o tem acesso a esta opera&ccedil;&atilde;o ({$this->label}: {$action}).", "default", array( 'class' => 'error' ) );
 			$this->redirect( "/" );
 		}
 	}
