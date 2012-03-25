@@ -164,8 +164,12 @@ class User extends AppModel {
 		if( array_key_exists( 'pass_switched', $options ) ){
 
 			$this->_passSwitched = $options[ 'pass_switched' ];
-			$this->validate[ 'newPassword' ][ 'alphanumeric' ][ 'allowEmpty' ] = false;
-			$this->validate[ 'newPassword' ][ 'between' ][ 'allowEmpty' ] = false;
+
+			if( !$this->_passSwitched ){
+
+				$this->validate[ 'newPassword' ][ 'alphanumeric' ][ 'allowEmpty' ] = false;
+				$this->validate[ 'newPassword' ][ 'between' ][ 'allowEmpty' ] = false;
+			}
 		}
 
 		return true;
@@ -189,6 +193,10 @@ class User extends AppModel {
 					$this->_passSwitched = $this->data[ $this->name ][ 'pass_switched' ] = '1';
 		}
 
+		if( isset( $this->data[ $this->name ][ 'pass_switched' ] ) )
+			if( !$this->data[ $this->name ][ 'pass_switched' ] )
+				unset( $this->data[ $this->name ][ 'pass_switched' ] );
+		
 		return true;
 	}
 	
