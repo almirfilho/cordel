@@ -134,7 +134,6 @@ class UsersController extends AppController {
       
     public function logout(){
 
-    	$this->User->lastLogin( $this->Auth->user( "id" ) );        
 		$this->redirect( $this->Auth->logout() );
 	}
 	

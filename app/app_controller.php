@@ -47,6 +47,7 @@ class AppController extends Controller {
 			if( !$this->Session->check( "Auth.User.Profile" ) ){
 
 				$this->Session->write( "Auth.User.Profile", $this->Profile->getAreas( $this->Auth->user( "profile_id" ) ) );
+				$this->Profile->User->lastLogin( $this->Auth->user( "id" ) );
 				$this->Menu->mount();
 			}
 		}
