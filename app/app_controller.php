@@ -50,6 +50,9 @@ class AppController extends Controller {
 				$this->Profile->User->lastLogin( $this->Auth->user( "id" ) );
 				$this->Menu->mount();
 			}
+
+			if( !$this->Auth->user( 'pass_switched' ) && $this->action != 'manageAccount' )
+				$this->redirect( array( 'controller' => 'users', 'action' => 'manageAccount' ) );
 		}
 	}
 	

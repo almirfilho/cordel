@@ -1,35 +1,23 @@
+<script type="text/javascript">
+$(document).ready( function(){
+	$('#UserNewPassword').val('');
+});
+</script>
+
 <?php
-	print $this->Form->create( "User", array( "action" => "manageAccount", "class" => "form" ) );
+	print $this->Form->create( "User", array( "action" => "manageAccount", "class" => "form-horizontal" ) );
 	print $this->Form->hidden( "User.id" );
-	print $this->Form->hidden( "User.currentPassword" );
+	print $this->BForm->input( 'User.name', array( 'label' => 'Nome', 'placeholder' => 'Nome do usuário' ) );
+	print $this->BForm->input( 'User.email', array( 'label' => 'Email', 'autocomplete' => 'off', 'placeholder' => 'exemplo@dominio.com' ) );
+	print $this->BForm->input( 'User.password', array( 'label' => 'Senha Atual', 'type' => 'password', 'autocomplete' => 'off' ) );
 ?>
 
-<table class="visualizar auto">
-	<tr>
-		<td class="label"><?= $this->Form->label( "User.name", 'Nome: <span class="req">*</span>' ) ?></td>
-		<td class="input"><?= $this->Form->input( "User.name", array( 'label' => false, 'class' => 'text', 'escape' => false ) ) ?></td>
-	</tr>
-	<tr>
-		<td class="label"><?= $this->Form->label( "User.email", "Email:" ) ?></td>
-		<td class="input"><?= $this->Form->input( "User.email", array( 'label' => false, 'class' => 'text', 'escape' => false ) ) ?></td>
-	</tr>
-	<tr>
-		<td class="label"><?= $this->Form->label( "User.currentPasswordConfirmation", 'Senha Atual: <span class="req">*</span>' ) ?></td>
-		<td class="input"><?= $this->Form->input( "User.currentPasswordConfirmation", array( 'label' => false, 'class' => 'text', 'type' => 'password' ) ) ?></td>
-	</tr>
-	<tr>
-		<td class="label"><?= $this->Form->label( "User.newPassword", "Nova Senha:" ) ?></td>
-		<td class="input"><?= $this->Form->input( "User.newPassword", array( 'label' => false, 'class' => 'text', 'type' => 'password' ) ) ?></td>
-		<td><label><span class="desc">(Apenas preencha se desejar mudar sua senha)</span></label></td>
-	</tr>
-	<tr>
-		<td class="label"><?= $this->Form->label( "User.newPasswordConfirmation", "Confirme a Nova Senha:" ) ?></td>
-		<td class="input"><?= $this->Form->input( "User.newPasswordConfirmation", array( 'label' => false, 'class' => 'text', 'type' => 'password' ) ) ?></td>
-		<td><label><span class="desc">(Apenas preencha se desejar mudar sua senha)</span></label></td>
-	</tr>
-	<tr>
-		<td colspan="2"><?= $this->element( "submit", array( 'cancel' => '/' ) ) ?></td>
-	</tr>
-</table>
+<fieldset>
+	<legend>Mudança de senha <small>Preencha apenas se desejar modificar a senha atual</small></legend>
+	<?php
+		print $this->BForm->input( 'User.newPassword', array( 'label' => 'Nova senha', 'type' => 'password', 'autocomplete' => 'off' ) );
+		print $this->BForm->input( 'User.passwordConfirm', array( 'label' => 'Confirme a senha', 'type' => 'password', 'autocomplete' => 'off' ) );
+	?>
+</fieldset>
 
-<?= $this->Form->end() ?>
+<?= $this->element( "submit", array( 'cancel' => "/" ) ) ?>

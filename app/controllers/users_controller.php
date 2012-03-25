@@ -138,47 +138,42 @@ class UsersController extends AppController {
 	}
 	
 	public function manageAccount(){
-		
-		if ( empty( $this->data ) ){
+	
+		if( empty( $this->data ) ){
 			
-			//	pegando o user logado no BD
-			$this->User->contain();
-			$this->data = $this->User->findById( $this->Auth->user( "id" ) );
-			$this->data[ "User" ][ "currentPassword" ] = $this->data[ "User" ][ "password" ];
-			$this->data[ "User" ][ "password" ] = "";
+			//	recuperando o usuario logado do BD
+			$this->data = $this->User->find( 'first', array(
+				'conditions' => array( 'id' => $this->Auth->user( 'id' ) ),
+				'fields' => array( 'name', 'email' ),
+				'contain' => false
+			) );
 			
 		} else {
 			
-			if( $this->data[ 'User' ][ 'email' ] == '--' )
-				$this->data[ 'User' ][ 'email' ] = '';
-			
 			$this->User->create( Sanitize::clean( $this->data ) );
+			$this->User->id = $this->Auth->user( 'id' );
 			
-			if ( $this->User->validates() ){
-				
-				if( $this->data[ "User" ][ "newPassword" ] != "" )
-					$this->data[ "User" ][ "password" ] = Security::hash( $this->data[ "User" ][ "newPassword" ], "md5", true );
-					
-				if( empty( $this->data[ 'User' ][ 'email' ] ) )
-					$this->data[ 'User' ][ 'email' ] = '--';
-				
-				if( $this->User->save( $this->data, false, array( "name", "email", "password", "modified" ) ) ){
+			if( $this->User->validates( array( 'pass_switched' => $this->Auth->user( 'pass_switched' ) ) ) ){
+
+				if( $this->User->save( null, false ) ){
 					
 					$this->Session->setFlash( "Seus dados foram atualizados com sucesso.", "default", array( 'class' => 'success' ) );
 					$this->Session->write( "Auth.User.name", $this->data[ "User" ][ "name" ] );
+					$this->Session->write( "Auth.User.pass_switched", $this->User->_passSwitched );
+					$this->redirect( "/" );
 					
-				} else {
-				
+				} else
 					$this->Session->setFlash( "Ocorreu um erro ao tentar atualizar seus dados. Por favor tente novamente.", "default", array( 'class' => 'error' ) );
-				}
-				
-				$this->redirect( "/" );
-				
+
 			} else {
 
-				$this->Session->setFlash( "Preencha todos os campos abaixo corretamente e tente novamente.", "default", array( 'class' => 'error' ) );
+				$this->setMessage( 'validateError' );
+				$this->data[ 'User' ][ 'password' ] = null;
 			}
 		}
+
+		if( !$this->Auth->user( 'pass_switched' ) && !$this->Session->check( 'Message.flash' ) )
+			$this->Session->setFlash( '<h4>Bem vindo(a)!</h4>Este é seu primeiro acesso a este Sistema. Antes de continuar é necessário modificar sua senha de acesso.<br />Confira também seus dados abaixo. Feito isto, não informe sua senha para outras pessoas.' );
 		
 		$this->submenu = array();
 		$this->subtitle = "Meus Dados";
@@ -199,6 +194,7 @@ class UsersController extends AppController {
 	
 	public function beforeFilter(){
 		
+		parent::beforeFilter();
 		Security::setHash( "md5" );
 	}
 	

@@ -37,11 +37,11 @@ class FrontEndHelper extends AppHelper {
 		$tagOpen = '<div class="page-header"><h1>';
 		$tagClose = '</h1></div>';
 
-		if( !empty( $permissions[ $controller ] ) )
-			return $tagOpen . $this->output( $permissions[ $controller ][ 'controller_label' ] ) . $tagClose;
-
-		elseif( $subtitle )
+		if( $subtitle )
 			return $tagOpen . $this->output( $subtitle ) . $tagClose;
+
+		elseif( !empty( $permissions[ $controller ] ) )
+			return $tagOpen . $this->output( $permissions[ $controller ][ 'controller_label' ] ) . $tagClose;
 
 		else
 			return null;
