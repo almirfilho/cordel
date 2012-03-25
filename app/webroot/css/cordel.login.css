@@ -44,3 +44,11 @@ div#login {
 	.form-horizontal .controls {
 		margin-left: 70px;
 	}
+
+div.spinner {
+	display: none;
+	width: 28px;
+	height: 28px;
+	float: left;
+	background: url(../img/spinner.gif) no-repeat center;
+}
