@@ -54,7 +54,7 @@ class MenuComponent extends Component {
 						'conditions' => array( 'AreaChild.appear' => '1' ),
 						'fields' => array( 'controller', 'controller_label', 'action' )
 		) ) ) ) );
-
+		
 		$this->Session->write( 'Auth.User.Menu', $areas[ 'Area' ] );
 	}
 	

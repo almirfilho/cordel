@@ -61,24 +61,30 @@ class FrontEndHelper extends AppHelper {
 		
 		$string = '';
 		$areas = &$this->Session->read( "Auth.User.Menu" );
+		$permissions = &$this->Session->read( "Auth.User.Profile" );
 		
 		foreach ($areas as $area) {
 
-			// nao eh submenu
-			if( empty( $area[ 'AreaChild' ] ) )
-				$string .= '<li class="'.$this->optionSelected( $area[ 'controller' ] ).'">'.$this->Html->link( $area[ 'controller_label' ], "/{$area['controller']}/{$area['action']}", array( 'escape' => false ) )."</li>\n";
+			// se tiver permissao para controller/action
+			if( !empty( $permissions[ $area['controller'] ][ 'action' ][ $area['action'] ] ) ){
 
-			else { // submenu
+				// nao eh submenu
+				if( empty( $area[ 'AreaChild' ] ) )
+					$string .= '<li class="'.$this->optionSelected( $area[ 'controller' ] ).'">'.$this->Html->link( $area[ 'controller_label' ], "/{$area['controller']}/{$area['action']}", array( 'escape' => false ) )."</li>\n";
 
-				$string .= '<li class="dropdown">'.
-					'<a href="#" class="dropdown-toggle" data-toggle="dropdown">'. $area[ 'controller_label' ] .' <b class="caret"></b></a>'.
-				    '<ul class="dropdown-menu">'.
-				    '<li class="'.$this->optionSelected( $area[ 'controller' ] ).'">'.$this->Html->link( $area[ 'controller_label' ], "/{$area['controller']}/{$area['action']}", array( 'escape' => false ) )."</li>\n";
-				
-				foreach( $area[ 'AreaChild' ] as $areaChild )
-					$string .= '<li class="divider"></li><li class="'.$this->optionSelected( $areaChild[ 'controller' ] ).'">'.$this->Html->link( $areaChild[ 'controller_label' ], "/{$areaChild['controller']}/{$areaChild['action']}", array( 'escape' => false ) )."</li>\n";
+				else { // submenu
 
-				$string .= '</ul></li>';
+					$string .= '<li class="dropdown">'.
+						'<a href="#" class="dropdown-toggle" data-toggle="dropdown">'. $area[ 'controller_label' ] .' <b class="caret"></b></a>'.
+					    '<ul class="dropdown-menu">'.
+					    '<li class="'.$this->optionSelected( $area[ 'controller' ] ).'">'.$this->Html->link( $area[ 'controller_label' ], "/{$area['controller']}/{$area['action']}", array( 'escape' => false ) )."</li>\n";
+					
+					foreach( $area[ 'AreaChild' ] as $areaChild )
+						if( !empty( $permissions[ $areaChild['controller'] ][ 'action' ][ $areaChild['action'] ] ) )
+							$string .= '<li class="divider"></li><li class="'.$this->optionSelected( $areaChild[ 'controller' ] ).'">'.$this->Html->link( $areaChild[ 'controller_label' ], "/{$areaChild['controller']}/{$areaChild['action']}", array( 'escape' => false ) )."</li>\n";
+
+					$string .= '</ul></li>';
+				}
 			}
 		}
 				
