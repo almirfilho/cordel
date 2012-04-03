@@ -11,4 +11,4 @@
 ?>
 </div>
 
-<?= $this->element( "submit", array( 'cancel' => '/profiles' ) ) ?>
+<?= $this->element( "submit", array( 'cancel' => "/profiles/view/{$this->passedArgs[0]}" ) ) ?>

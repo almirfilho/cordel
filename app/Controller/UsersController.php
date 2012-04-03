@@ -13,6 +13,16 @@ class UsersController extends AppController {
 	public $label	= 'Usuários';
 	
 	public $submenu	= array( 'index', 'add' );
+
+	/*----------------------------------------
+	 * Callbacks
+	 ----------------------------------------*/
+	
+	public function beforeFilter(){
+		
+		parent::beforeFilter();
+		Security::setHash( "md5" );
+	}
 	
 	/*----------------------------------------
 	 * Actions
@@ -68,7 +78,7 @@ class UsersController extends AppController {
 
 		if( !$this->User->isAdmin() && $this->User->isAdmin( $id ) ){
 			
-			$this->Session->setFlash( "Voc&ecirc; n&atilde;o pode editar Usu&aacute;rios Administradores.", "default", array( 'class' => 'error' ) );
+			$this->Session->setFlash( "Você não pode <strong>editar</strong> Usuários <strong>Administradores</strong>.", "default", array( 'class' => 'error' ) );
 			$this->redirect( array( 'controller' => $this->name, 'action' => 'view', $id ) );
 		}
 
@@ -77,12 +87,12 @@ class UsersController extends AppController {
 			if( $this->User->isAdminUser() )
 				$this->Session->setFlash( 'Para editar seu usuário Administrador, clique em "<strong>Meus dados</strong>" no menu do canto superior direito.', 'default', array( 'button' => array( 'label' => 'Editar meus dados', 'url' => '/users/manageAccount' ) ) );
 			else
-				$this->Session->setFlash( "Voc&ecirc; n&atilde;o pode editar o Usu&aacute;rio Administrador Geral.", "default", array( 'class' => 'error' ) );
+				$this->Session->setFlash( "Você não pode <strong>editar</strong> o Usuário <strong>Administrador Geral</strong>.", "default", array( 'class' => 'error' ) );
 
 			$this->redirect( array( 'controller' => $this->name, 'action' => 'view', $id ) );
 		}
 		
-		if( $this->request->isPut() ){
+		if( !$this->request->isPut() ){
 
 			$this->User->contain();
 			$this->data = $this->User->findById( $id );
@@ -117,19 +127,19 @@ class UsersController extends AppController {
 		
 		if( $user[ 'User' ][ 'id' ] == $this->Auth->user( "id" ) ){
 			
-			$this->Session->setFlash( "Voc&ecirc; n&atilde;o pode excluir seu pr&oacute;prio usu&aacute;rio.", "default", array( 'class' => 'error' ) );
+			$this->Session->setFlash( "Você não pode <strong>excluir</strong> seu próprio Usuário.", "default", array( 'class' => 'error' ) );
 			$this->redirect( array( 'controller' => $this->name, 'action' => 'view', $id ) );
 		}
 
 		if( !$this->User->isAdmin() && $this->User->isAdmin( $user[ 'User' ][ 'profile_id' ] ) ){
 			
-			$this->Session->setFlash( "Voc&ecirc; n&atilde;o pode excluir Usu&aacute;rios Administradores.", "default", array( 'class' => 'error' ) );
+			$this->Session->setFlash( "Você não pode <strong>excluir</strong> Usuários <strong>Administradores</strong>.", "default", array( 'class' => 'error' ) );
 			$this->redirect( array( 'controller' => $this->name, 'action' => 'view', $id ) );
 		}
 
 		if( $this->User->isAdminUser( $user[ 'User' ][ 'id' ] ) ){
 
-			$this->Session->setFlash( "Voc&ecirc; n&atilde;o pode excluir o Usu&aacute;rio Administrador Geral.", "default", array( 'class' => 'error' ) );
+			$this->Session->setFlash( "Você não pode <strong>excluir</strong> o Usuário <strong>Administrador Geral</strong>.", "default", array( 'class' => 'error' ) );
 			$this->redirect( array( 'controller' => $this->name, 'action' => 'view', $id ) );	
 		}
 		
@@ -148,7 +158,7 @@ class UsersController extends AppController {
         	if( $this->Auth->login() )
             	$this->redirect($this->Auth->redirect());
 			else
-				$this->Session->setFlash( '<strong>Usuário</strong> ou <strong>senha</strong> inv&aacute;lida.', 'default', array( 'class' => 'error' ), 'auth' );
+				$this->Session->setFlash( '<strong>Usuário</strong> ou <strong>senha</strong> inválida.', 'default', array( 'class' => 'error' ), 'auth' );
 		}
 
 		$this->layout = "login";
@@ -179,20 +189,20 @@ class UsersController extends AppController {
 
 				if( $this->User->save( null, false ) ){
 					
-					$this->Session->setFlash( "Seus dados foram atualizados com sucesso.", "default", array( 'class' => 'success' ) );
+					$this->Session->setFlash( "Seus dados foram atualizados com <strong>sucesso</strong>.", "default", array( 'class' => 'success' ) );
 					$this->Session->write( "Auth.User.name", $this->data[ "User" ][ "name" ] );
 					$this->Session->write( "Auth.User.pass_switched", $this->User->_passSwitched );
 					$this->redirect( "/" );
 					
 				} else
-					$this->Session->setFlash( "Ocorreu um erro ao tentar atualizar seus dados. Por favor tente novamente.", "default", array( 'class' => 'error' ) );
+					$this->Session->setFlash( "Ocorreu um <strong>erro</strong> ao tentar atualizar seus dados. Por favor tente novamente.", "default", array( 'class' => 'error' ) );
 
 			} else
 				$this->setMessage( 'validateError' );
 		}
 
 		if( !$this->Auth->user( 'pass_switched' ) && !$this->Session->check( 'Message.flash' ) )
-			$this->Session->setFlash( '<h4>Bem vindo(a)!</h4>Este é seu primeiro acesso a este Sistema. Antes de continuar é necessário modificar sua senha de acesso.<br />Confira também seus dados abaixo. Feito isto, não informe sua senha para outras pessoas.' );
+			$this->Session->setFlash( '<h4>Bem vindo(a)!</h4>Este é seu primeiro acesso a este Sistema. <strong>Antes</strong> de continuar é necessário <strong>modificar sua senha</strong> de acesso.<br />Confira também seus dados abaixo. Feito isto, <strong>não informe sua senha para terceiros</strong>.' );
 		
 		$this->submenu = array();
 		$this->subtitle = "Meus Dados";
@@ -210,16 +220,6 @@ class UsersController extends AppController {
 			$options[ 'conditions' ] = array( 'Profile.id <>' => Configure::read( 'AdminProfileId' ) );
 		
 		$this->set( "profiles", $this->User->Profile->find( "list", $options ) );
-	}
-
-	/*----------------------------------------
-	 * Callbacks
-	 ----------------------------------------*/
-	
-	public function beforeFilter(){
-		
-		parent::beforeFilter();
-		Security::setHash( "md5" );
 	}
 	
 }

@@ -40,6 +40,8 @@ class AppController extends Controller {
 	public $title		=	"Cordel";
 	
 	public $components	= 	array(
+
+		'Security',
 		'Auth' => array( 
 			'authorize'  => 'Controller',
 			'authError'  => 'Por favor, efetue <strong>login</strong> para ter acesso a esta área.',
@@ -178,22 +180,22 @@ class AppController extends Controller {
 		switch( $template ){
 
 			case "saveSuccess":
-				$str = $this->{$model}->label." salv".$this->{$model}->gender." com sucesso.";
+				$str = '<strong>'.$this->{$model}->label."</strong> salv".$this->{$model}->gender." com <strong>sucesso</strong>.";
 				$class = 'success';
 				break;
 
 			case "saveError":
-				$str = "Ocorreu um erro ao tentar salvar ".$this->{$model}->label.". Por favor tente novamente.";
+				$str = "Ocorreu um <strong>erro</strong> ao tentar salvar <strong>".$this->{$model}->label."</strong>. Por favor tente novamente.";
 				$class = 'error';
 				break;
 
 			case "deleteSuccess":
-				$str = $this->{$model}->label." excluíd".$this->{$model}->gender." com sucesso.";
+				$str = '<strong>'.$this->{$model}->label."</strong> excluíd".$this->{$model}->gender." com <strong>sucesso</strong>.";
 				$class = 'success';
 				break;
 
 			case "deleteError":
-				$str = "Ocorreu um erro ao tentar excluir ".$this->{$model}->label.". Por favor tente novamente.";
+				$str = "Ocorreu um <strong>erro</strong> ao tentar excluir <strong>".$this->{$model}->label."</strong>. Por favor tente novamente.";
 				$class = 'error';
 				break;
 
@@ -203,7 +205,7 @@ class AppController extends Controller {
 				break;
 
 			case 'noResult':
-				$str = up( $this->{$model}->gender )." ".$this->{$model}->label." que você está tentando acessar não existe.";
+				$str = up( $this->{$model}->gender )." <strong>".$this->{$model}->label."</strong> que você está tentando acessar <strong>não existe</strong>.";
 				$class = 'error';
 				break;
 		}

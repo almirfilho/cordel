@@ -3,7 +3,9 @@
 App::uses('AppHelper', 'View/Helper');
 define('FORMS_REQUIRED_STRING', '<span class="req">*</span> ');
 
-class BFormHelper extends FormHelper {
+class BFormHelper extends AppHelper {
+
+	public $helpers = array( 'Form' );
 
 	/*----------------------------------------
 	 * Constructor
@@ -29,7 +31,7 @@ class BFormHelper extends FormHelper {
 		if( !isset( $options[ 'required' ] ) )
 			$options[ 'label' ] = FORMS_REQUIRED_STRING . $options[ 'label' ];
 
-		if( !empty( $this->validationErrors[$model][$field] ) )
+		if( !empty( $this->Form->validationErrors[$model][$field] ) )
 			$str .= ' error';
 
 		elseif( !empty( $options[ 'help' ] ) )
@@ -42,9 +44,9 @@ class BFormHelper extends FormHelper {
 		}
 
 		$str .= '">';
-		$str .= parent::label( $fieldName, $options[ 'label' ], array( 'class' => 'control-label' ) );
+		$str .= $this->Form->label( $fieldName, $options[ 'label' ], array( 'class' => 'control-label' ) );
 		unset( $options[ 'label' ] );
-		$str .= parent::input( $fieldName, array_merge( array( 'label' => false, 'div' => 'controls', 'escape' => false, 'before' => $before, 'after' => $after, 'error' => array( 'attributes' => array( 'wrap' => 'span', 'class' => 'help-inline' ) ) ), $options ) );
+		$str .= $this->Form->input( $fieldName, array_merge( array( 'label' => false, 'div' => 'controls', 'escape' => false, 'before' => $before, 'after' => $after, 'error' => array( 'attributes' => array( 'wrap' => 'span', 'class' => 'help-inline' ) ) ), $options ) );
 		$str .= '</div>';
 		return $str;
 	}
