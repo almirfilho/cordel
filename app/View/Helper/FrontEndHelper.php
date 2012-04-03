@@ -36,8 +36,8 @@ class FrontEndHelper extends AppHelper {
 		if( $flash ){
 
 			$class = empty( $flash[ 'params' ][ 'class' ] ) ? null : ' alert-'.$flash[ 'params' ][ 'class' ];
-			$button = empty( $flash[ 'params' ][ 'button' ] ) ? null : '<br />'.$this->Html->link( $flash[ 'params' ][ 'button' ][ 'label' ], $flash[ 'params' ][ 'button' ][ 'url' ], array( 'class' => 'btn btn-mini' ) );
-			$message = $flash[ 'message' ];
+			$button = empty( $flash[ 'params' ][ 'button' ] ) ? null : $this->Html->link( $flash[ 'params' ][ 'button' ][ 'label' ], $flash[ 'params' ][ 'button' ][ 'url' ], array( 'class' => 'btn btn-mini' ) );
+			$message = $this->Session->check( "Message.flash" ) ? $this->Session->flash() : $this->Session->flash('auth');
 
 			return '<div class="alert'.$class.'"><a class="close" data-dismiss="alert">×</a>'.$message.$button.'</div>';
 		}
