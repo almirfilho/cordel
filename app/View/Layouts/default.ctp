@@ -52,7 +52,7 @@
 
 	<?php
 		print $this->FrontEnd->getHeader( $this->name, $this->action, $subtitle );
-		print $this->element( "messages" );
+		print $this->FrontEnd->message();
     	print $this->FrontEnd->getSubMenu( $submenu, $this->name, $this->action );
     ?>
 

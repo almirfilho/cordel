@@ -24,7 +24,9 @@ $(document).ready( function(){
 	$('.btn.delete').click( function(e){
 		e.preventDefault();
 		deleteUrl = $(this).attr('href');
-		$('#delete').modal('show');
+		$('#delete').modal('show').on( 'shown', function(){
+			$('#deleteConfirm').focus();
+		});
 	});
 
 	$('#deleteCancel').click( function(e){

@@ -26,8 +26,24 @@ class FrontEndHelper extends AppHelper {
 	}
 
 	/*----------------------------------------
-	 * Atributtes
+	 * Methods
 	 ----------------------------------------*/
+
+	public function message(){
+	
+		$flash = $this->Session->check( "Message.flash" ) ? $this->Session->read( "Message.flash" ) : $this->Session->read( "Message.auth" );
+
+		if( $flash ){
+
+			$class = empty( $flash[ 'params' ][ 'class' ] ) ? null : ' alert-'.$flash[ 'params' ][ 'class' ];
+			$button = empty( $flash[ 'params' ][ 'button' ] ) ? null : '<br />'.$this->Html->link( $flash[ 'params' ][ 'button' ][ 'label' ], $flash[ 'params' ][ 'button' ][ 'url' ], array( 'class' => 'btn btn-mini' ) );
+			$message = $flash[ 'message' ];
+
+			return '<div class="alert'.$class.'"><a class="close" data-dismiss="alert">×</a>'.$message.$button.'</div>';
+		}
+
+		return null;
+	}
 
 	public function niceDate( &$date, $verbose = false ){
 

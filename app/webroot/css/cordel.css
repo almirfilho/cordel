@@ -120,10 +120,7 @@ table.table th.pic {
 	.form-horizontal.view td.dlabel {
 		width: 150px;
 		text-align: right;
-		/*font-weight: bold;*/
 		color: #999;
-		/*text-transform: uppercase;*/
-		/*font-size: 10px*/
 	}
 
 .form-horizontal.well {
@@ -138,7 +135,6 @@ div.title {
 	div.title h2 {
 		font-size: 22px;
 		font-weight: normal;
-		/*line-height: 30px*/
 	}
 
 		div.title h2 i {
@@ -151,6 +147,14 @@ div.title {
 	div.title div a {
 		float: right;
 		margin: 7px 0px 0px 5px;
+	}
+
+div#middle .alert {
+	box-shadow: 1px 1px 0px white;
+}
+
+	div#middle .alert .btn {
+		margin-top: 5px;
 	}
 
 form.form-horizontal {

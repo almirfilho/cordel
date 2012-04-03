@@ -25,7 +25,7 @@ $(document).ready( function(){
 	<h1><?= $title_for_layout ?></h1>
 	<h6>LOGIN</h6>
 	<?php
-		print $this->element( "messages" );
+		print $this->FrontEnd->message();
 		print $content_for_layout;
 	?>
 </div>
