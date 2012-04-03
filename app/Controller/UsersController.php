@@ -41,7 +41,7 @@ class UsersController extends AppController {
 		
 		$this->checkAccess( $this->name, __FUNCTION__ );
 		
-		if( $this->request->is('post') ){
+		if( $this->request->isPost() ){
 			
 			$this->User->create( $this->request->data );
 			
@@ -66,14 +66,24 @@ class UsersController extends AppController {
 		
 		$this->checkAccess( $this->name, __FUNCTION__ );
 
-		if( $id == 1 ){
+		if( !$this->User->isAdmin() && $this->User->isAdmin( $id ) ){
 			
-			$this->Session->setFlash( "Voc&ecirc; n&atilde;o pode editar o Usu&aacute;rio Administrador.", "default", array( 'class' => 'error' ) );
-			$this->redirect( array( 'controller' => $this->name, 'action' => 'view', 1 ) );
+			$this->Session->setFlash( "Voc&ecirc; n&atilde;o pode editar Usu&aacute;rios Administradores.", "default", array( 'class' => 'error' ) );
+			$this->redirect( array( 'controller' => $this->name, 'action' => 'view', $id ) );
 		}
-			
-		if( !$this->request->is('post') ){
-			
+
+		if( $this->User->isAdminUser( $id ) ){
+
+			if( $this->User->isAdminUser() )
+				$this->Session->setFlash( 'Para editar seu usuário Administrador, clique em "<strong>Meus dados</strong>" no menu do canto superior direito.', 'default', array( 'button' => array( 'label' => 'Editar meus dados', 'url' => '/users/manageAccount' ) ) );
+			else
+				$this->Session->setFlash( "Voc&ecirc; n&atilde;o pode editar o Usu&aacute;rio Administrador Geral.", "default", array( 'class' => 'error' ) );
+
+			$this->redirect( array( 'controller' => $this->name, 'action' => 'view', $id ) );
+		}
+		
+		if( $this->request->isPut() ){
+
 			$this->User->contain();
 			$this->data = $this->User->findById( $id );
 
@@ -99,7 +109,7 @@ class UsersController extends AppController {
 	}
 	
 	public function delete( $id = null ){
-			
+		
 		$this->checkAccess( $this->name, __FUNCTION__ );
 		
 		$this->User->contain();
@@ -110,11 +120,17 @@ class UsersController extends AppController {
 			$this->Session->setFlash( "Voc&ecirc; n&atilde;o pode excluir seu pr&oacute;prio usu&aacute;rio.", "default", array( 'class' => 'error' ) );
 			$this->redirect( array( 'controller' => $this->name, 'action' => 'view', $id ) );
 		}
-		
-		if( $user[ 'User' ][ 'profile_id' ] == 1 && $user[ 'User' ][ 'id' ] == 1 ){
+
+		if( !$this->User->isAdmin() && $this->User->isAdmin( $user[ 'User' ][ 'profile_id' ] ) ){
 			
-			$this->Session->setFlash( "Voc&ecirc; n&atilde;o pode excluir o Usu&aacute;rio Administrador.", "default", array( 'class' => 'error' ) );
+			$this->Session->setFlash( "Voc&ecirc; n&atilde;o pode excluir Usu&aacute;rios Administradores.", "default", array( 'class' => 'error' ) );
 			$this->redirect( array( 'controller' => $this->name, 'action' => 'view', $id ) );
+		}
+
+		if( $this->User->isAdminUser( $user[ 'User' ][ 'id' ] ) ){
+
+			$this->Session->setFlash( "Voc&ecirc; n&atilde;o pode excluir o Usu&aacute;rio Administrador Geral.", "default", array( 'class' => 'error' ) );
+			$this->redirect( array( 'controller' => $this->name, 'action' => 'view', $id ) );	
 		}
 		
 		if( $this->User->delete( $id ) )
@@ -127,7 +143,7 @@ class UsersController extends AppController {
 		
 	public function login(){
 
-		if( $this->request->is('post') ) {
+		if( $this->request->isPost() ) {
 			
         	if( $this->Auth->login() )
             	$this->redirect($this->Auth->redirect());
@@ -145,7 +161,7 @@ class UsersController extends AppController {
 	
 	public function manageAccount(){
 	
-		if( !$this->request->is('post') ){
+		if( !$this->request->isPost() ){
 			
 			//	recuperando o usuario logado do BD
 			$this->data = $this->User->find( 'first', array(
@@ -188,7 +204,12 @@ class UsersController extends AppController {
 
 	private function profilesList(){
 
-		$this->set( "profiles", $this->User->Profile->find( "list", array( 'order' => 'name ASC' ) ) );
+		$options = array( 'order' => 'name ASC' );
+
+		if( !$this->User->isAdmin() )
+			$options[ 'conditions' ] = array( 'Profile.id <>' => Configure::read( 'AdminProfileId' ) );
+		
+		$this->set( "profiles", $this->User->Profile->find( "list", $options ) );
 	}
 
 	/*----------------------------------------

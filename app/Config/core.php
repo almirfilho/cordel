@@ -34,6 +34,10 @@
  */
 	Configure::write('debug', 2);
 
+// Defining Admin User and Admin Profiles IDs
+	Configure::write('AdminUserId', 1);
+	Configure::write('AdminProfileId', 1);
+
 /**
  * Configure the Error handler used to handle errors for your application.  By default
  * ErrorHandler::handleError() is used.  It will display errors using Debugger, when debug > 0

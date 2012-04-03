@@ -48,8 +48,15 @@ class User extends AppModel {
 
 		'profile_id' => array(
 			
-			'rule' => 'notEmpty',
-			'message' => 'Selecione um Perfil'
+			'notEmpty' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Selecione um Perfil'
+			),
+
+			'adminProfile' => array(
+				'rule' => 'adminProfile',
+				'message' => 'Você não pode criar usuários com Perfil Administrador'
+			)
 		),
 
 		'password' => array(
@@ -145,6 +152,14 @@ class User extends AppModel {
 		return true;
 	}
 
+	public function adminProfile( $check ){
+		
+		if( !$this->isAdmin() )
+			return array_pop( $check ) != Configure::read( 'AdminProfileId' );
+
+		return true;
+	}
+
 	/*----------------------------------------
 	 * Methods
 	 ----------------------------------------*/
@@ -153,6 +168,22 @@ class User extends AppModel {
 		
 		$this->id = $user_id;
 		$this->saveField( 'last_login', date('Y-m-d H:i:s') );
+	}
+
+	public static function isAdmin( $profile_id = null ){
+
+		if( !$profile_id )
+			$profile_id = AuthComponent::user( 'profile_id' );
+
+		return $profile_id == Configure::read( 'AdminProfileId' );
+	}
+
+	public static function isAdminUser( $user_id = null ){
+
+		if( !$user_id )
+			$user_id = AuthComponent::user( 'id' );
+
+		return $user_id == Configure::read( 'AdminUserId' );
 	}
 
 	/*----------------------------------------
