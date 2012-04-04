@@ -34,9 +34,14 @@ class Profile extends AppModel {
 	/*----------------------------------------
 	 * Methods
 	 ----------------------------------------*/
-		
+	
+	public static function isAdmin( $profile_id ){
+
+		return $profile_id == Configure::read( 'AdminProfileId' );
+	}
+
 	public function getAreas( $profile_id ){
-// die('dasdasdasadda');
+
 		$profile = $this->find( 'first', array( 
 			'conditions' => array( 'Profile.id' => $profile_id ), 
 			'fields' => 'Profile.modified',

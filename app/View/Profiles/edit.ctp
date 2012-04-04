@@ -1,5 +1,5 @@
 <?php
-	print $this->Form->create( "Profile", array( "action" => "edit", "class" => "form-horizontal" ) );
+	print $this->Form->create( "Profile", array( "class" => "form-horizontal" ) );
 	print $this->Form->hidden( 'Profile.id' );
 	print $this->BForm->input( 'Profile.name', array( 'label' => 'Nome', 'placeholder' => 'Nome do perfil' ) );
 ?>

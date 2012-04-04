@@ -62,7 +62,7 @@ class AppController extends Controller {
 	public $submenu		=	array();
 	
 	public $subtitle	=	null;
-	
+
 	/*----------------------------------------
 	 * Callbacks
 	 ----------------------------------------*/

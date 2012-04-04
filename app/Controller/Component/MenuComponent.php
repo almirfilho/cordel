@@ -48,6 +48,7 @@ class MenuComponent extends Component {
 			'fields' => 'id',
 			'contain' => array(
 				'Area' => array(
+					'order' => 'Area.controller_label ASC',
 					'conditions' => array( 'Area.appear' => '1', 'Area.parent_id' => null ),
 					'fields' => array( 'controller', 'controller_label', 'action' ),
 					'AreaChild' => array(

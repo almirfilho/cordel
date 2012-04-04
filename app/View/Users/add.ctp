@@ -1,4 +1,4 @@
-<?= $this->Form->create( 'User', array( 'class' => 'form-horizontal' ) ) ?>
+<?= $this->Form->create( 'User', array( 'class' => 'form-horizontal' ) ); ?>
 
 <div class="row">
 	<div class="span6">

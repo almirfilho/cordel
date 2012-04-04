@@ -44,9 +44,9 @@ class ProfilesController extends AppController {
 		
 		$this->checkAccess( $this->name, __FUNCTION__ );
 		
-		if( $this->request->is('post') ){
+		if( $this->request->isPost() ){
 			
-			$this->Profile->create( $this->data );
+			$this->Profile->create( $this->request->data );
 			
 			if( $this->Profile->validates() ){
 				
@@ -69,20 +69,20 @@ class ProfilesController extends AppController {
 
 		$this->checkAccess( $this->name, __FUNCTION__ );
 		
-		if( $id == 1 ){
+		if( $this->Profile->isAdmin( $id ) ){
 			
-			$this->Session->setFlash( "Voc&ecirc; n&atilde;o pode editar o Perfil Administrador.", "default", array( 'class' => 'error' ) );
+			$this->Session->setFlash( "Você não pode <strong>editar</strong> o Perfil <strong>Administrador</strong>.", "default", array( 'class' => 'error' ) );
 			$this->redirect( array( 'controller' => $this->name, 'action' => 'view', 1 ) );
 		}
 		
-		if( !$this->request->is('post') ){
+		if( !$this->request->isPut() ){
 			
-			$this->Profile->contain( array( 'Area' ) );
+			$this->Profile->contain( 'Area' );
 			$this->data = $this->Profile->findById( $id );
 			
 		} else {
 			
-			$this->Profile->create( $this->data );
+			$this->Profile->create( $this->request->data );
 			
 			if( $this->Profile->validates() ){
 				
@@ -105,15 +105,15 @@ class ProfilesController extends AppController {
 			
 		$this->checkAccess( $this->name, __FUNCTION__ );
 	
-		if( $id == 1 ){
+		if( $this->Profile->isAdmin( $id ) ){
 			
-			$this->Session->setFlash( "Voc&ecirc; n&atilde;o pode excluir o Perfil Administrador.", "default", array( 'class' => 'error' ) );
+			$this->Session->setFlash( "Você não pode <strong>excluir</strong> o Perfil <strong>Administrador</strong>.", "default", array( 'class' => 'error' ) );
 			$this->redirect( array( 'controller' => $this->name, 'action' => 'view', $id ) );
 		}
 		
 		if( $id == $this->Auth->user( "profile_id" ) ){
 			
-			$this->Session->setFlash( "Voc&ecirc; n&atilde;o pode excluir seu próprio Perfil.", "default", array( 'class' => 'error' ) );
+			$this->Session->setFlash( "Você não pode <strong>excluir</strong> seu próprio <strong>Perfil</strong>.", "default", array( 'class' => 'error' ) );
 			$this->redirect( array( 'controller' => $this->name, 'action' => 'view', $id ) );
 		}
 		
