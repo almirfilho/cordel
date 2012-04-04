@@ -22,6 +22,24 @@ $(document).ready( function(){
 		$(this).find('input:submit, button').attr( 'disabled', 'disabled' ).addClass( 'disabled' );
 		$(this).find('div.spinner').show();
 	});
+
+	$('button.btn.checkbox').click( function(){
+
+		var hidden = $( $(this).attr('data-setinput') );
+
+		if( hidden.val() == '' || hidden.val() == null || hidden.val() == undefined || hidden.val() == false )
+			hidden.val('1');
+		else
+			hidden.val('0');
+	});
+
+	$('button.btn.radio').click( function(){
+
+		var hidden = $( $(this).attr('data-setinput') );
+
+		if( !hidden.attr('checked') )
+			hidden.attr('checked', true);
+	});
 });
 
 // easter egg
