@@ -14,19 +14,21 @@ class ProfilesController extends AppController {
 	
 	public $submenu	= array( 'index', 'add' );
 	
+
+	
 	/*----------------------------------------
 	 * Actions
 	 ----------------------------------------*/
 	
 	public function index(){
 
-		$this->checkAccess( $this->name, __FUNCTION__ );
+		//$this->checkAccess( $this->name, __FUNCTION__ );
 		$this->set( "profiles", $this->paginate( "Profile" ) );
 	}
 	
 	public function view( $id = null ){
 		
-		$this->checkAccess( $this->name, __FUNCTION__ );
+		//$this->checkAccess( $this->name, __FUNCTION__ );
 		
 		$profile = $this->Profile->find( 'first', array( 
 			'conditions' => array( 'Profile.id' => $id ),
@@ -42,7 +44,7 @@ class ProfilesController extends AppController {
 	
 	public function add(){
 		
-		$this->checkAccess( $this->name, __FUNCTION__ );
+		//$this->checkAccess( $this->name, __FUNCTION__ );
 		
 		if( $this->request->isPost() ){
 			
@@ -67,7 +69,7 @@ class ProfilesController extends AppController {
 	
 	public function edit( $id = null ){
 
-		$this->checkAccess( $this->name, __FUNCTION__ );
+		//$this->checkAccess( $this->name, __FUNCTION__ );
 		
 		if( $this->Profile->isAdmin( $id ) ){
 			
@@ -103,7 +105,7 @@ class ProfilesController extends AppController {
 	
 	public function delete( $id = null ){
 			
-		$this->checkAccess( $this->name, __FUNCTION__ );
+		//$this->checkAccess( $this->name, __FUNCTION__ );
 	
 		if( $this->Profile->isAdmin( $id ) ){
 			

@@ -13,6 +13,9 @@ class UsersController extends AppController {
 	public $label	= 'UsuÃ¡rios';
 	
 	public $submenu	= array( 'index', 'add' );
+	
+    // Permitir o acesso de alguns actions que não tem a necessidade de  bloqueio
+	public $allowActions =  array( 'logout', 'manageAccount'); 
 
 	/*----------------------------------------
 	 * Callbacks
@@ -30,7 +33,7 @@ class UsersController extends AppController {
 	
 	public function index(){
 
-		$this->checkAccess( $this->name, __FUNCTION__ );
+		//$this->checkAccess( $this->name, __FUNCTION__ );
 		$this->paginate[ 'fields' ] = array( 'id', 'name', 'email' );
 		$this->paginate[ 'contain' ] = array( 'Profile.name' );
 		$this->paginate[ 'order' ] = "User.created DESC";
@@ -39,7 +42,7 @@ class UsersController extends AppController {
 	
 	public function view( $id = null ){
 			
-		$this->checkAccess( $this->name, __FUNCTION__ );
+		//$this->checkAccess( $this->name, __FUNCTION__ );
 		$this->User->contain( array( 'Profile' => array( 'fields' => array( 'name' ) ) ) );
 		$user = $this->User->findById( $id );
 
@@ -49,7 +52,7 @@ class UsersController extends AppController {
 	
 	public function add(){
 		
-		$this->checkAccess( $this->name, __FUNCTION__ );
+		//$this->checkAccess( $this->name, __FUNCTION__ );
 		
 		if( $this->request->isPost() ){
 			
@@ -74,7 +77,7 @@ class UsersController extends AppController {
 	
 	public function edit( $id = null ){
 		
-		$this->checkAccess( $this->name, __FUNCTION__ );
+		//$this->checkAccess( $this->name, __FUNCTION__ );
 
 		if( !$this->User->isAdmin() && $this->User->isAdmin( $id ) ){
 			
@@ -120,7 +123,7 @@ class UsersController extends AppController {
 	
 	public function delete( $id = null ){
 		
-		$this->checkAccess( $this->name, __FUNCTION__ );
+		//$this->checkAccess( $this->name, __FUNCTION__ );
 		
 		$this->User->contain();
 		$user = $this->User->findById( $id );

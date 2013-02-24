@@ -58,6 +58,11 @@ class PagesController extends AppController {
  * @param mixed What page to display
  * @return void
  */
+	// Autoriza o acesso a página inicial para todos que tem acesso ao sistema. Nota: não achei o modo de fazer isso no AppController
+	public function isAuthorized(){
+		return true;
+	}
+	
 	public function display() {
 		$path = func_get_args();
 

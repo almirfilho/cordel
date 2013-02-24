@@ -62,7 +62,9 @@ class AppController extends Controller {
 	public $submenu		=	array();
 	
 	public $subtitle	=	null;
-
+	
+//Actions acessadas sem restrições 
+	public $allowActions =  array( 'home', 'display');
 	/*----------------------------------------
 	 * Callbacks
 	 ----------------------------------------*/
@@ -132,8 +134,37 @@ class AppController extends Controller {
 	}
 	
 	public function isAuthorized(){
+		$action = '';//INICIALIZANDO A VARIÁVEL
+	
+		//VERIFICA SE O ACTION QUE ESTÁ SENDO SOLICITADO NO MOMENTO ESTÁ NA PROPRIEDADE $this->allowActions, SE ESTIVER, GUARDA NA VARIÁVEL $action
+		if ($this->allowActions){
+			foreach ($this->allowActions as $key  => $allowAction) {
+			
+				 if ( $this->action == $allowAction ){
+				 	$action = $allowAction;
+				 }
+				
+			}
+			
+		}
 		
-		return true;
+		/*COM A VARIÁVEL $ACTION PREENCHIDA COM O NOME DO ACTION DO MOMENTO, ENTÃO CHECA PRIMEIRAMENTE SE O USUÁRIO TEM ACESSO
+		AO CONTROLLER ATUAL E SE A VARIÁVEL  $action É IGUAL AO ACTION SOLICITADO NO MOMENTO.*/
+	    if ( $this->Session->check( "Auth.User.Profile.{$this->name}" ) && $action == $this->action  ){
+				
+			return true;
+			
+		}
+		
+		//CHECANDO SE O USUÁRIO TEM ACESSO A DETERMINADA ÁREA E ACTION
+		if ( !$this->checkAccess($this->name,$this->action ) ){
+
+			return false;
+			
+		}
+			
+		//CONFORME A FUNÇÃO NÃO CAIR EM NENHUM IF ANTERIORMENTE O CONTROLLER DO MOMENTO É LIBERADO PARA TER ACESSO
+	    return true;
 	}
 	
 	protected function checkAccess( $controller = null, $action = null ){
@@ -141,26 +172,39 @@ class AppController extends Controller {
 		if( $controller == null || $action == null ){
 			
 			$this->Session->setFlash( "Ocorreu um erro de permiss&otilde;es. (erro: falta de parametros)", "default", array( 'class' => 'error' ) );
-			$this->redirect( "/" );			
+			$this->redirect( "/" );	
+			return false;		
 		}
 		
 		if( !$this->Session->check( "Auth.User" ) ){
+					
+			$this->Session->setFlash( "faca login para acesso a esta area", array( 'class' => 'error' ) );
 			
-			$this->Session->setFlash( "Por favor, efetue login para ter acesso a esta &aacute;rea.", "default", array( 'class' => 'error' ) );
-			$this->redirect( "/" );	
+			$this->redirect( "/" );
+			return false;
+	
 		}
 		
 		if( !$this->Session->check( "Auth.User.Profile.{$controller}" ) ){
-			
+					
 			$this->Session->setFlash( "Voc&ecirc; n&atilde;o tem acesso a esta &Aacute;rea ({$this->label}).", "default", array( 'class' => 'error' ) );
+			
 			$this->redirect( "/" );
+			return false;
+	
 		}
 		
 		if( !$this->Session->check( "Auth.User.Profile.{$controller}.action.{$action}" ) ){
 			
 			$this->Session->setFlash( "Voc&ecirc; n&atilde;o tem acesso a esta opera&ccedil;&atilde;o ({$this->label}: {$action}).", "default", array( 'class' => 'error' ) );
 			$this->redirect( "/" );
+			
+			return false;
 		}
+		
+		/*RETORNA TRUE  QUANDO NENHUM DOS IF's ANTERIORES  FOREM SATISFATÓRIOS, OU SEJA, O SUÁRIO ESTÁ LOGADO E TEM ACESSO AO SOLICITADO NO MOMENTO. ISSO PARA NÃO CAIR NO SEGUNDO IF DO METODO 
+		isAuthorized QUE BLOQUEARIA O CONTROLLER OU ACTION DO MOMENTO.*/
+		return true;
 	}
 
 	protected function checkResult( &$data, $model, &$url = null ){
